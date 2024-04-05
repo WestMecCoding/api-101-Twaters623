@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
-<h1>Global Average Temperatures 1880-2023</h1>
+<h1>MLB Team Payroll and Wins</h1>
 <canvas id="myChart" width="400" height="200"></canvas>
     <script>
       window.addEventListener("load", fetchData);
@@ -18,10 +18,10 @@
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4 && xhr.status === 200) {
             let data = xhr.responseText;
-            const globalTemps = processData(data);
-            renderChart(globalTemps);
+            const allwins = processData(data);
+            console.log(allwins);
+            renderChart(allwins);
 
-            // console.log(globalTemps);
             // data = data.split("\n").slice(1);
             console.log(data[0]);
           } else {
@@ -32,18 +32,18 @@
         xhr.send();
       }
       function processData(data) {
-        const years = [];
-        const temps = [];
+        const payroll = [];
+        const wins = [];
         rows = data.split("\n").slice(1);
         console.log(rows[0]);
         rows.forEach((row) => {
           const cols = row.split(",");
-          years.push(cols[0]);
-          temps.push(14 + parseFloat(cols[1]));
+          payroll.push(cols[1]);
+          wins.push(cols[2]);
 
           // console.log(cols[0]);
         });
-        return { years, temps };
+        return { payroll, wins };
 
         // console.log(data[0]);
       }
@@ -54,11 +54,11 @@
         new Chart(ctx, {
           type: "line",
           data: {
-            labels: data.years,
+            labels: data.wins,
             datasets: [
               {
-                label: "Temp in Celsius",
-                data: data.temps,
+                label: "Wins Compared to Payroll",
+                data: data.payroll,
                 fill:false,
                 borderWidth: 1,
                 borderColor:'rgba(255,199,132,1)',
